@@ -33,6 +33,13 @@ def main() -> int:
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w", encoding="utf-8", newline="") as f:
         f.write(line)
+    # Read it back: the grader gates on exactly what is on disk, so make
+    # sure the file holds the line we meant, byte for byte.
+    with open(out_path, "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    if written != line:
+        print("entry on disk does not match the composed line", file=sys.stderr)
+        return 1
     print(f"wrote {len(line)} chars to {out_path}")
     return 0
 
